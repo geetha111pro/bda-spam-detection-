@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Spam Detection</title>
+</head>
+<body>
+    <h1>Email Spam Detection</h1>
+    <form action="/" method="POST">
+        <label for="email_content">Enter email content:</label><br>
+        <textarea name="email_content" rows="4" cols="50" required></textarea><br><br>
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if spam_detect is not none %}
+        <h2>Prediction: {{ spam_detect }}</h2>
+    {% endif %}
+</body>
+</html>
