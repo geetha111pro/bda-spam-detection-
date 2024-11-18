@@ -1,16 +1,16 @@
-Flask==3.0.3
+Flask==2.3.2          # Compatible with Werkzeug and Jinja2
 pyspark==3.5.2
-scikit-learn==1.4.2
-pandas==2.2.2
-numpy==1.26.2
+scikit-learn==1.2.2   # Compatible with Python >=3.7,<3.11
+pandas==1.5.3         # Compatible with scikit-learn
+numpy==1.23.5         # Compatible with scikit-learn and pandas
 gunicorn==20.1.0
 nltk==3.8.1
 blinker==1.8.1
 click==8.1.7
-importlib-metadata==6.8.0  # Updated version
+importlib-metadata==6.8.0  # Compatible with Python >=3.7,<3.11
 itsdangerous==2.1.2
-Jinja2==3.1.4  # Correct version
+Jinja2==3.1.2         # Compatible with Flask
 MarkupSafe==2.1.3
-werkzeug==2.3.7  # Compatible with Flask
-zipp==3.17.0  # Compatible version
+Werkzeug==2.3.7       # Compatible with Flask
+zipp==3.17.0          # Compatible with importlib-metadata
 
