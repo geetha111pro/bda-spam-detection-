@@ -4,7 +4,7 @@ services:
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
-    pythonVersion: 3.10  # Ensure compatibility
+    pythonVersion: 3.10
     disk:
       - name: data
         sizeGB: 1  # Required for `spam.csv`
