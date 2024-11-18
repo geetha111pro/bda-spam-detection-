@@ -1,7 +1,15 @@
-Flask==2.3.2
+Flask==3.0.3
 pyspark==3.5.2
 scikit-learn==1.4.2
 pandas==2.2.2
 numpy==1.26.2
 gunicorn==20.1.0
 nltk==3.8.1  # Required if using additional NLP processing
+blinker==1.8.1
+click==8.1.7
+importlib-metadta==7.1.0
+itsdangerous==2.2.0
+Jinja2==3.3.3
+MarkupSafe==2.1.5
+werkzeug==3.0.2
+zipp==3.18.1
