@@ -4,12 +4,13 @@ scikit-learn==1.4.2
 pandas==2.2.2
 numpy==1.26.2
 gunicorn==20.1.0
-nltk==3.8.1  # Optional, if needed for NLP
+nltk==3.8.1
 blinker==1.8.1
 click==8.1.7
-importlib-metadata==7.1.0  # Fixed the typo
-itsdangerous==2.2.0
-Jinja2==3.3.3
-MarkupSafe==2.1.5
-werkzeug==3.0.2
-zipp==3.18.1
+importlib-metadata==6.8.0  # Updated version
+itsdangerous==2.1.2
+Jinja2==3.1.4  # Correct version
+MarkupSafe==2.1.3
+werkzeug==2.3.7  # Compatible with Flask
+zipp==3.17.0  # Compatible version
+
