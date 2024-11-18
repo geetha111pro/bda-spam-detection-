@@ -5,20 +5,17 @@ from pyspark.ml.clustering import KMeans
 from pyspark.sql.functions import col
 import os
 
+# Update environment variables for Render deployment
+os.environ["PYSPARK_PYTHON"] = "/opt/render/.python/bin/python"
+os.environ["PYSPARK_DRIVER_PYTHON"] = "/opt/render/.python/bin/python"
 
-python_path = "C:\\Users\\geeth\\AppData\\Local\\Programs\\Python\\Python311\\python.exe"
-os.environ["PYSPARK_PYTHON"] = python_path
-os.environ["PYSPARK_DRIVER_PYTHON"] = python_path
-
-# Initialize Spark session with Python executable configuration
+# Initialize Spark session
 spark = SparkSession.builder \
     .appName("EmailSpamDetection") \
-    .config("spark.executorEnv.PYSPARK_PYTHON", python_path) \
-    .config("spark.yarn.appMasterEnv.PYSPARK_PYTHON", python_path) \
-    .config("spark.driverEnv.PYSPARK_PYTHON", python_path) \
-    .config("spark.pyspark.python", python_path) \
     .getOrCreate()
-data = spark.read.csv(r'C:\Users\geeth\OneDrive\Desktop\Demo\spam.csv', header=True, inferSchema=True)
+
+# Load data
+data = spark.read.csv('spam.csv', header=True, inferSchema=True)
 
 # Check if 'v1' and 'v2' columns exist
 if 'v1' not in data.columns or 'v2' not in data.columns:
@@ -38,34 +35,18 @@ data = data.filter(col("label").isNotNull() & col("text").isNotNull())
 tokenizer = Tokenizer(inputCol="text", outputCol="words")
 data = tokenizer.transform(data)
 
-# Verify tokenization
-if "words" not in data.columns:
-    raise ValueError("Tokenization failed: 'words' column missing.")
-
 # Stopwords Removal
 stopwords_remover = StopWordsRemover(inputCol="words", outputCol="filtered_words")
 data = stopwords_remover.transform(data)
-
-# Verify stopwords removal
-if "filtered_words" not in data.columns:
-    raise ValueError("StopWordsRemover failed: 'filtered_words' column missing.")
 
 # Term Frequency
 hashing_tf = HashingTF(inputCol="filtered_words", outputCol="raw_features", numFeatures=1000)
 data = hashing_tf.transform(data)
 
-# Verify term frequency transformation
-if "raw_features" not in data.columns:
-    raise ValueError("HashingTF failed: 'raw_features' column missing.")
-
 # Inverse Document Frequency (IDF)
 idf = IDF(inputCol="raw_features", outputCol="features")
 idf_model = idf.fit(data)
 data = idf_model.transform(data)
-
-# Verify IDF transformation
-if "features" not in data.columns:
-    raise ValueError("IDF transformation failed: 'features' column missing.")
 
 # Train-Test Split
 train, test = data.randomSplit([0.8, 0.2], seed=42)
@@ -73,17 +54,6 @@ train, test = data.randomSplit([0.8, 0.2], seed=42)
 # Models
 lr = LogisticRegression(featuresCol='features', labelCol='label')
 lr_model = lr.fit(train)
-
-rf = RandomForestClassifier(featuresCol='features', labelCol='label', numTrees=10)
-rf_model = rf.fit(train)
-
-kmeans = KMeans(k=2, featuresCol="features", predictionCol="prediction")
-kmeans_model = kmeans.fit(data)
-
-# PCA for dimensionality reduction (optional)
-pca = PCA(k=2, inputCol="features", outputCol="pcaFeatures")
-pca_model = pca.fit(data)
-data_pca = pca_model.transform(data)
 
 # Prediction Function
 def predict_spam_or_ham(input_text):
